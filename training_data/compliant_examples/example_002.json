@@ -1,0 +1,18 @@
+{
+  "code_sample": "#include <stdint.h>\n#include <stdbool.h>\n\n#define MAX_BUFFER_SIZE 256\n#define MAX_ITERATIONS 1000\n\ntypedef struct {\n    uint8_t data[MAX_BUFFER_SIZE];\n    uint16_t length;\n    bool is_full;\n} circular_buffer_t;\n\n/**\n * @brief Initializes a circular buffer\n * @param buffer Pointer to buffer structure\n * @return true if initialization successful\n */\nbool init_circular_buffer(circular_buffer_t* buffer) {\n    bool success = false;\n    \n    if (buffer != NULL) {\n        buffer->length = 0;\n        buffer->is_full = false;\n        success = true;\n    }\n    \n    return success;\n}\n\n/**\n * @brief Adds data to circular buffer\n * @param buffer Pointer to buffer structure\n * @param value Data value to add\n * @return true if data added successfully\n */\nbool add_to_buffer(circular_buffer_t* buffer, uint8_t value) {\n    bool success = false;\n    \n    if (buffer != NULL && !buffer->is_full) {\n        buffer->data[buffer->length] = value;\n        buffer->length++;\n        \n        if (buffer->length >= MAX_BUFFER_SIZE) {\n            buffer->is_full = true;\n        }\n        \n        success = true;\n    }\n    \n    return success;\n}\n\n/**\n * @brief Processes buffer data with bounded iteration\n * @param buffer Pointer to buffer structure\n * @return Number of items processed\n */\nuint16_t process_buffer_data(circular_buffer_t* buffer) {\n    uint16_t processed_count = 0;\n    uint16_t iteration_count = 0;\n    \n    if (buffer == NULL) {\n        return processed_count;\n    }\n    \n    while (buffer->length > 0 && iteration_count < MAX_ITERATIONS) {\n        uint8_t data_value = buffer->data[processed_count];\n        \n        if (data_value > 0) {\n            processed_count++;\n        }\n        \n        iteration_count++;\n    }\n    \n    return processed_count;\n}\n\nint main(void) {\n    circular_buffer_t buffer;\n    bool init_success;\n    uint16_t processed_items;\n    \n    init_success = init_circular_buffer(&buffer);\n    \n    if (init_success) {\n        add_to_buffer(&buffer, 10);\n        add_to_buffer(&buffer, 20);\n        add_to_buffer(&buffer, 30);\n        \n        processed_items = process_buffer_data(&buffer);\n    }\n    \n    return (int)processed_items;\n}",
+  "compliance_score": 98,
+  "compliance_level": "fully_compliant",
+  "violations": [],
+  "annotations": {
+    "function_count": 4,
+    "line_count": 85,
+    "complexity_score": 4,
+    "nesting_depth": 3,
+    "variable_count": 12,
+    "pointer_count": 6,
+    "loop_count": 1,
+    "conditional_count": 8
+  },
+  "tags": ["circular_buffer", "data_structures", "bounded_iteration", "memory_management"],
+  "difficulty": "intermediate"
+}

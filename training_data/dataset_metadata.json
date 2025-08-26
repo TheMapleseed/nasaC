@@ -1,0 +1,274 @@
+{
+  "dataset_info": {
+    "name": "NASA C Code Compliance Training Dataset",
+    "version": "1.0.0",
+    "description": "Machine learning training dataset for NASA C coding standards compliance",
+    "created_date": "2024-01-01",
+    "total_samples": 11,
+    "compliant_samples": 7,
+    "non_compliant_samples": 4,
+    "standards_covered": ["NASA Power of 10", "NASA Style Guide", "MISRA C", "JPL Standards", "Error Handling", "Real-Time Systems", "Testing & Verification", "Command Control & Data Validation", "Resource Management & Oversubscription", "Enhanced Testing & Verification", "Concurrency & Thread Safety", "Enhanced Code Readability", "Compiler-Specific Guidelines", "Aerospace Environmental Guidelines", "Industry Standards Integration"],
+    "architectures_covered": ["ARM Cortex-M", "ARM Cortex-A", "PowerPC e500", "PowerPC e6500", "x86-32", "x86-64", "RISC-V 32", "RISC-V 64"]
+  },
+  "data_structure": {
+    "code_sample": {
+      "type": "string",
+      "description": "C code snippet to be evaluated",
+      "max_length": 10000
+    },
+    "compliance_score": {
+      "type": "integer",
+      "description": "Overall compliance score (0-100)",
+      "range": [0, 100]
+    },
+    "compliance_level": {
+      "type": "string",
+      "description": "Categorical compliance level",
+      "values": ["fully_compliant", "minor_issues", "moderate_issues", "major_issues", "non_compliant"]
+    },
+    "violations": {
+      "type": "array",
+      "description": "List of specific rule violations found",
+      "items": {
+        "rule_id": {
+          "type": "string",
+          "description": "Identifier for the violated rule"
+        },
+        "rule_name": {
+          "type": "string",
+          "description": "Human-readable rule name"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the violation"
+        },
+        "severity": {
+          "type": "string",
+          "description": "Violation severity level",
+          "values": ["minor", "moderate", "major", "critical"]
+        },
+        "line_number": {
+          "type": "integer",
+          "description": "Line number where violation occurs (if applicable)"
+        },
+        "suggestion": {
+          "type": "string",
+          "description": "Suggested fix for the violation"
+        }
+      }
+    },
+    "annotations": {
+      "type": "object",
+      "description": "Additional metadata about the code sample",
+      "properties": {
+        "function_count": {
+          "type": "integer",
+          "description": "Number of functions in the code"
+        },
+        "line_count": {
+          "type": "integer",
+          "description": "Total number of lines"
+        },
+        "complexity_score": {
+          "type": "integer",
+          "description": "Cyclomatic complexity score"
+        },
+        "nesting_depth": {
+          "type": "integer",
+          "description": "Maximum nesting depth of control structures"
+        },
+        "variable_count": {
+          "type": "integer",
+          "description": "Number of variables declared"
+        },
+        "pointer_count": {
+          "type": "integer",
+          "description": "Number of pointer operations"
+        },
+        "loop_count": {
+          "type": "integer",
+          "description": "Number of loop constructs"
+        },
+        "conditional_count": {
+          "type": "integer",
+          "description": "Number of conditional statements"
+        }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "description": "Categorical tags for the code sample",
+      "items": {
+        "type": "string"
+      }
+    },
+    "difficulty": {
+      "type": "string",
+      "description": "Difficulty level for training purposes",
+      "values": ["beginner", "intermediate", "advanced", "expert"]
+    }
+  },
+  "rule_mapping": {
+    "power_of_10": {
+      "rule_1": {
+        "id": "rule_1",
+        "name": "Avoid Complex Flow Control",
+        "description": "No goto, setjmp, longjmp, or recursion",
+        "penalty": 10,
+        "category": "flow_control"
+      },
+      "rule_2": {
+        "id": "rule_2",
+        "name": "Fixed Loop Bounds",
+        "description": "All loops must have compile-time determinable upper bounds",
+        "penalty": 8,
+        "category": "loop_safety"
+      },
+      "rule_3": {
+        "id": "rule_3",
+        "name": "No Dynamic Memory",
+        "description": "No malloc, free, or dynamic memory allocation",
+        "penalty": 12,
+        "category": "memory_safety"
+      },
+      "rule_4": {
+        "id": "rule_4",
+        "name": "Function Parameters",
+        "description": "No more than 2 function parameters",
+        "penalty": 6,
+        "category": "function_design"
+      },
+      "rule_5": {
+        "id": "rule_5",
+        "name": "Pointer Dereferencing",
+        "description": "No more than 2 levels of pointer indirection",
+        "penalty": 8,
+        "category": "pointer_safety"
+      },
+      "rule_6": {
+        "id": "rule_6",
+        "name": "Variable Declarations",
+        "description": "All variables declared at scope beginning",
+        "penalty": 4,
+        "category": "code_structure"
+      },
+      "rule_7": {
+        "id": "rule_7",
+        "name": "Single Return Point",
+        "description": "All functions must have single return point",
+        "penalty": 6,
+        "category": "function_design"
+      },
+      "rule_8": {
+        "id": "rule_8",
+        "name": "Preprocessor Usage",
+        "description": "Only #include allowed, no #define or macros",
+        "penalty": 5,
+        "category": "preprocessor"
+      },
+      "rule_9": {
+        "id": "rule_9",
+        "name": "Assignment in Expressions",
+        "description": "No assignment operators in conditional expressions",
+        "penalty": 6,
+        "category": "expression_safety"
+      },
+      "rule_10": {
+        "id": "rule_10",
+        "name": "Multiple Assignments",
+        "description": "No multiple assignments in single statement",
+        "penalty": 4,
+        "category": "code_clarity"
+      }
+    },
+    "style_guide": {
+      "naming_conventions": {
+        "id": "style_naming",
+        "name": "Naming Conventions",
+        "description": "Descriptive names for variables, functions, and constants",
+        "penalty": 3,
+        "category": "readability"
+      },
+      "function_length": {
+        "id": "style_function_length",
+        "name": "Function Length",
+        "description": "Functions should not exceed 50 lines",
+        "penalty": 5,
+        "category": "maintainability"
+      },
+      "comment_coverage": {
+        "id": "style_comments",
+        "name": "Comment Coverage",
+        "description": "Functions should have header comments",
+        "penalty": 2,
+        "category": "documentation"
+      },
+      "error_handling": {
+        "id": "style_error_handling",
+        "name": "Error Handling",
+        "description": "Consistent error handling with return codes",
+        "penalty": 4,
+        "category": "robustness"
+      },
+      "type_safety": {
+        "id": "style_type_safety",
+        "name": "Type Safety",
+        "description": "Use explicit integer types and bounds checking",
+        "penalty": 6,
+        "category": "safety"
+      }
+    }
+  },
+  "scoring_algorithm": {
+    "base_score": 100,
+    "power_of_10_weight": 0.7,
+    "style_guide_weight": 0.3,
+    "severity_multipliers": {
+      "minor": 1.0,
+      "moderate": 1.5,
+      "major": 2.0,
+      "critical": 3.0
+    }
+  },
+  "training_configuration": {
+    "validation_split": 0.2,
+    "test_split": 0.1,
+    "data_augmentation": {
+      "enabled": true,
+      "techniques": [
+        "variable_renaming",
+        "comment_variations",
+        "whitespace_variations",
+        "syntax_variations"
+      ]
+    },
+    "class_balance": {
+      "target_ratio": {
+        "fully_compliant": 0.3,
+        "minor_issues": 0.3,
+        "moderate_issues": 0.2,
+        "major_issues": 0.15,
+        "non_compliant": 0.05
+      }
+    }
+  },
+  "evaluation_metrics": {
+    "primary": [
+      "accuracy",
+      "precision",
+      "recall",
+      "f1_score"
+    ],
+    "secondary": [
+      "compliance_score_mae",
+      "violation_detection_rate",
+      "false_positive_rate",
+      "false_negative_rate"
+    ],
+    "business_metrics": [
+      "compliance_improvement_rate",
+      "code_review_efficiency",
+      "defect_prevention_rate"
+    ]
+  }
+}

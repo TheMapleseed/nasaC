@@ -1,0 +1,203 @@
+{
+  "code_sample": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n/* MISRA Rule 4.1 Violation: Octal constants */\n#define BUFFER_SIZE 077\n#define MAX_LOOPS 0100\n\n/* MISRA Rule 5.1 Violation: Long identifier */\nint this_is_a_very_long_identifier_name_that_exceeds_thirty_one_characters = 0;\n\n/* MISRA Rule 7.1 Violation: Missing U suffix */\nconst uint32_t MAX_VALUE = 1000;\nconst uint16_t MIN_VALUE = 100;\n\n/* MISRA Rule 8.1 Violation: Missing parameter types */\nint process_data(x, y, z) {\n    /* MISRA Rule 9.1 Violation: Uninitialized variable */\n    int result;\n    int temp;\n    \n    /* MISRA Rule 13.2 Violation: Inconsistent expression evaluation */\n    result = x++ + arr[x];  /* Order of evaluation is undefined */\n    \n    /* MISRA Rule 11.1 Violation: Assignment expression used */\n    if (temp = x + y) {\n        result += temp;\n    }\n    \n    /* MISRA Rule 12.1 Violation: Comma operator */\n    result = (x, y, z);\n    \n    return result;\n}\n\n/* MISRA Rule 17.2 Violation: Recursion */\nint factorial(int n) {\n    if (n <= 1) {\n        return 1;\n    }\n    return n * factorial(n - 1);  /* Recursive call */\n}\n\n/* NASA Rule 1 Violation: Complex flow control with goto */\nvoid process_with_goto(int condition) {\n    int status = 0;\n    \n    if (condition < 0) {\n        goto error_handler;\n    }\n    \n    /* Process data */\n    status = 1;\n    \n    if (condition > 100) {\n        goto cleanup;\n    }\n    \n    /* More processing */\n    status = 2;\n    \ncleanup:\n    printf(\"Cleanup complete\\n\");\n    return;\n    \nerror_handler:\n    printf(\"Error occurred\\n\");\n    goto cleanup;\n}\n\n/* NASA Rule 2 Violation: Unbounded loop */\nvoid process_until_done() {\n    int counter = 0;\n    \n    while (1) {  /* No upper bound */\n        counter++;\n        if (counter > 1000) {\n            break;\n        }\n        /* Process data */\n    }\n}\n\n/* NASA Rule 3 Violation: Dynamic memory allocation */\nint* create_dynamic_buffer(int size) {\n    int* buffer = malloc(size * sizeof(int));\n    if (buffer == NULL) {\n        return NULL;\n    }\n    \n    /* Initialize buffer */\n    memset(buffer, 0, size * sizeof(int));\n    return buffer;\n}\n\n/* NASA Rule 4 Violation: Too many parameters */\nint complex_function(int a, int b, int c, int d, int e, int f, int g) {\n    return a + b + c + d + e + f + g;\n}\n\n/* NASA Rule 5 Violation: Multiple pointer dereferencing */\nint get_triple_pointer_value(int*** ptr) {\n    return ***ptr;  /* Triple dereferencing */\n}\n\n/* NASA Rule 6 Violation: Variable declaration in middle */\nvoid function_with_mid_declaration(int x) {\n    int result = x * 2;\n    \n    if (result > 100) {\n        int temp = result / 2;  /* Declaration in middle */\n        result = temp;\n    }\n    \n    return result;\n}\n\n/* NASA Rule 7 Violation: Multiple return points */\nint function_with_multiple_returns(int x) {\n    if (x < 0) {\n        return -1;  /* First return */\n    }\n    \n    if (x > 100) {\n        return -2;  /* Second return */\n    }\n    \n    if (x == 0) {\n        return 0;   /* Third return */\n    }\n    \n    return x;       /* Fourth return */\n}\n\n/* NASA Rule 8 Violation: Preprocessor macros */\n#define SQUARE(x) ((x) * (x))\n#define MAX(a, b) ((a) > (b) ? (a) : (b))\n#define PROCESS_DATA(x, y) { x++; y++; }\n\n/* NASA Rule 9 Violation: Assignment in expressions */\nint process_with_assignment(int* data, int size) {\n    int sum = 0;\n    int i = 0;\n    \n    while ((i = get_next_index(data, i)) < size) {  /* Assignment in condition */\n        sum += data[i];\n    }\n    \n    return sum;\n}\n\n/* NASA Rule 10 Violation: Multiple assignments */\nvoid initialize_variables() {\n    int a, b, c, d;\n    \n    a = b = c = d = 0;  /* Multiple assignments */\n    \n    /* JPL Rule 6 Violation: Uninitialized memory */\n    int buffer[100];  /* Contents undefined */\n    \n    /* Use buffer without initialization */\n    printf(\"Buffer[0] = %d\\n\", buffer[0]);\n}\n\n/* JPL Rule 7 Violation: Poor error handling */\nint divide_numbers(int a, int b) {\n    return a / b;  /* No error checking for division by zero */\n}\n\n/* JPL Rule 9 Violation: Implicit type conversion */\nvoid type_conversion_violations() {\n    int int_value = 1000;\n    char char_value = int_value;  /* Implicit conversion */\n    \n    float float_value = 3.14f;\n    int int_result = float_value;  /* Implicit conversion */\n}\n\n/* JPL Rule 10 Violation: Platform-dependent types */\nvoid platform_dependent_types() {\n    int size = 100;        /* Platform-dependent size */\n    short count = 50;      /* Platform-dependent size */\n    long offset = 1000L;   /* Platform-dependent size */\n}\n\nint main() {\n    int x, y, z;\n    int* dynamic_buffer;\n    int*** triple_ptr;\n    \n    /* Multiple assignments violation */\n    x = y = z = 0;\n    \n    /* Dynamic memory violation */\n    dynamic_buffer = create_dynamic_buffer(100);\n    \n    /* Complex function call violation */\n    int result = complex_function(x, y, z, 1, 2, 3, 4);\n    \n    /* Recursion violation */\n    int factorial_result = factorial(5);\n    \n    /* Goto violation */\n    process_with_goto(x);\n    \n    /* Unbounded loop violation */\n    process_until_done();\n    \n    /* Multiple returns violation */\n    int status = function_with_multiple_returns(x);\n    \n    /* Assignment in expression violation */\n    int sum = process_with_assignment(dynamic_buffer, 100);\n    \n    /* Type conversion violations */\n    type_conversion_violations();\n    \n    /* Platform-dependent types */\n    platform_dependent_types();\n    \n    /* Cleanup */\n    if (dynamic_buffer != NULL) {\n        free(dynamic_buffer);\n    }\n    \n    return 0;\n}",
+  "compliance_score": 12,
+  "compliance_level": "non_compliant",
+  "violations": [
+    {
+      "rule_id": "misra_4.1",
+      "rule_name": "Octal Constants",
+      "description": "Use of octal constants 077 and 0100",
+      "severity": "minor",
+      "line_number": 6,
+      "suggestion": "Use decimal constants instead of octal"
+    },
+    {
+      "rule_id": "misra_5.1",
+      "rule_name": "Long Identifiers",
+      "description": "Identifier exceeds 31 characters",
+      "severity": "minor",
+      "line_number": 9,
+      "suggestion": "Use shorter identifier names"
+    },
+    {
+      "rule_id": "misra_7.1",
+      "rule_name": "Missing U Suffix",
+      "description": "Unsigned constants missing U suffix",
+      "severity": "minor",
+      "line_number": 12,
+      "suggestion": "Add U suffix to unsigned constants"
+    },
+    {
+      "rule_id": "misra_8.1",
+      "rule_name": "Missing Parameter Types",
+      "description": "Function parameters missing explicit types",
+      "severity": "major",
+      "line_number": 15,
+      "suggestion": "Specify explicit types for all parameters"
+    },
+    {
+      "rule_id": "misra_9.1",
+      "rule_name": "Uninitialized Variables",
+      "description": "Variable 'result' read before initialization",
+      "severity": "major",
+      "line_number": 16,
+      "suggestion": "Initialize all variables before use"
+    },
+    {
+      "rule_id": "misra_13.2",
+      "rule_name": "Inconsistent Expression Evaluation",
+      "description": "Order of evaluation undefined in 'x++ + arr[x]'",
+      "severity": "critical",
+      "line_number": 20,
+      "suggestion": "Separate operations to ensure evaluation order"
+    },
+    {
+      "rule_id": "misra_11.1",
+      "rule_name": "Assignment in Expressions",
+      "description": "Assignment expression used in if condition",
+      "severity": "moderate",
+      "line_number": 23,
+      "suggestion": "Separate assignment from condition"
+    },
+    {
+      "rule_id": "misra_12.1",
+      "rule_name": "Comma Operator",
+      "description": "Use of comma operator in expression",
+      "severity": "minor",
+      "line_number": 26,
+      "suggestion": "Avoid comma operator usage"
+    },
+    {
+      "rule_id": "misra_17.2",
+      "rule_name": "Recursion",
+      "description": "Recursive function call in factorial()",
+      "severity": "critical",
+      "line_number": 33,
+      "suggestion": "Use iterative approach instead of recursion"
+    },
+    {
+      "rule_id": "nasa_rule_1",
+      "rule_name": "Complex Flow Control",
+      "description": "Use of goto statements in process_with_goto()",
+      "severity": "critical",
+      "line_number": 38,
+      "suggestion": "Use structured control flow instead of goto"
+    },
+    {
+      "rule_id": "nasa_rule_2",
+      "rule_name": "Fixed Loop Bounds",
+      "description": "Loop 'while (1)' has no upper bound guarantee",
+      "severity": "major",
+      "line_number": 55,
+      "suggestion": "Add compile-time determinable upper bound"
+    },
+    {
+      "rule_id": "nasa_rule_3",
+      "rule_name": "No Dynamic Memory",
+      "description": "Use of malloc() and free() functions",
+      "severity": "critical",
+      "line_number": 62,
+      "suggestion": "Use static allocation or stack-based allocation"
+    },
+    {
+      "rule_id": "nasa_rule_4",
+      "rule_name": "Function Parameters",
+      "description": "Function 'complex_function' has 7 parameters",
+      "severity": "major",
+      "line_number": 68,
+      "suggestion": "Use a structure to group related parameters"
+    },
+    {
+      "rule_id": "nasa_rule_5",
+      "rule_name": "Pointer Dereferencing",
+      "description": "Triple pointer dereferencing in get_triple_pointer_value()",
+      "severity": "major",
+      "line_number": 73,
+      "suggestion": "Limit pointer dereferencing to maximum 2 levels"
+    },
+    {
+      "rule_id": "nasa_rule_6",
+      "rule_name": "Variable Declarations",
+      "description": "Variable 'temp' declared in middle of function",
+      "severity": "minor",
+      "line_number": 80,
+      "suggestion": "Move all variable declarations to beginning of function"
+    },
+    {
+      "rule_id": "nasa_rule_7",
+      "rule_name": "Single Return Point",
+      "description": "Multiple return statements in function_with_multiple_returns()",
+      "severity": "moderate",
+      "line_number": 87,
+      "suggestion": "Use single return point with result variable"
+    },
+    {
+      "rule_id": "nasa_rule_8",
+      "rule_name": "Preprocessor Usage",
+      "description": "Use of #define for macros and constants",
+      "severity": "minor",
+      "line_number": 95,
+      "suggestion": "Use const declarations instead of #define"
+    },
+    {
+      "rule_id": "nasa_rule_9",
+      "rule_name": "Assignment in Expressions",
+      "description": "Assignment in while loop condition",
+      "severity": "moderate",
+      "line_number": 100,
+      "suggestion": "Separate assignment from condition checking"
+    },
+    {
+      "rule_id": "nasa_rule_10",
+      "rule_name": "Multiple Assignments",
+      "description": "Multiple assignments in single statement",
+      "severity": "minor",
+      "line_number": 107,
+      "suggestion": "Use separate assignment statements"
+    },
+    {
+      "rule_id": "jpl_rule_6",
+      "rule_name": "Memory Initialization",
+      "description": "Buffer contents are undefined after declaration",
+      "severity": "moderate",
+      "line_number": 110,
+      "suggestion": "Explicitly initialize buffer contents"
+    },
+    {
+      "rule_id": "jpl_rule_7",
+      "rule_name": "Error Handling",
+      "description": "No error checking for division by zero",
+      "severity": "major",
+      "line_number": 115,
+      "suggestion": "Add comprehensive error checking"
+    },
+    {
+      "rule_id": "jpl_rule_9",
+      "rule_name": "Type Safety",
+      "description": "Implicit type conversions without explicit casting",
+      "severity": "moderate",
+      "line_number": 120,
+      "suggestion": "Use explicit type casting"
+    },
+    {
+      "rule_id": "jpl_rule_10",
+      "rule_name": "Standard Integer Types",
+      "description": "Use of platform-dependent integer types",
+      "severity": "minor",
+      "line_number": 125,
+      "suggestion": "Use stdint.h types for platform independence"
+    }
+  ],
+  "annotations": {
+    "function_count": 15,
+    "line_count": 140,
+    "complexity_score": 18,
+    "nesting_depth": 6,
+    "variable_count": 25,
+    "pointer_count": 12,
+    "loop_count": 4,
+    "conditional_count": 15
+  },
+  "tags": ["multiple_standards", "misra_violations", "nasa_violations", "jpl_violations", "comprehensive_examples"],
+  "difficulty": "expert"
+}

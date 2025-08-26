@@ -1,0 +1,18 @@
+{
+  "code_sample": "#include <stdint.h>\n#include <stdbool.h>\n\n#define MAX_SENSOR_COUNT 16\n#define MAX_TEMPERATURE 150\n#define MIN_TEMPERATURE -50\n\ntypedef struct {\n    uint16_t sensor_id;\n    int16_t temperature;\n    bool is_active;\n} sensor_data_t;\n\ntypedef struct {\n    sensor_data_t sensors[MAX_SENSOR_COUNT];\n    uint8_t active_count;\n} sensor_array_t;\n\n/**\n * @brief Validates sensor data against operational limits\n * @param data Pointer to sensor data structure\n * @return true if data is valid, false otherwise\n */\nbool validate_sensor_data(const sensor_data_t* data) {\n    bool is_valid = true;\n    \n    if (data == NULL) {\n        is_valid = false;\n    } else if (data->temperature < MIN_TEMPERATURE) {\n        is_valid = false;\n    } else if (data->temperature > MAX_TEMPERATURE) {\n        is_valid = false;\n    }\n    \n    return is_valid;\n}\n\n/**\n * @brief Processes all active sensors in the array\n * @param array Pointer to sensor array\n * @return Number of sensors processed\n */\nuint8_t process_sensor_array(const sensor_array_t* array) {\n    uint8_t processed_count = 0;\n    uint8_t index = 0;\n    \n    if (array == NULL) {\n        return processed_count;\n    }\n    \n    while (index < MAX_SENSOR_COUNT && index < array->active_count) {\n        if (array->sensors[index].is_active) {\n            if (validate_sensor_data(&array->sensors[index])) {\n                processed_count++;\n            }\n        }\n        index++;\n    }\n    \n    return processed_count;\n}\n\nint main(void) {\n    sensor_array_t sensor_array;\n    uint8_t result;\n    \n    sensor_array.active_count = 0;\n    result = process_sensor_array(&sensor_array);\n    \n    return (int)result;\n}",
+  "compliance_score": 100,
+  "compliance_level": "fully_compliant",
+  "violations": [],
+  "annotations": {
+    "function_count": 3,
+    "line_count": 65,
+    "complexity_score": 3,
+    "nesting_depth": 3,
+    "variable_count": 8,
+    "pointer_count": 4,
+    "loop_count": 1,
+    "conditional_count": 6
+  },
+  "tags": ["sensor_processing", "data_validation", "array_operations", "safety_critical"],
+  "difficulty": "intermediate"
+}

@@ -1,0 +1,99 @@
+{
+  "code_sample": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n#define MAX 100\n#define MIN 0\n\nint process_data(int x, int y, int z, int w, int v) {\n    int temp;\n    int result;\n    \n    if (x < MIN) return -1;\n    if (x > MAX) return -2;\n    \n    temp = malloc(100);\n    if (temp == NULL) return -3;\n    \n    while (y > 0) {\n        if (z == 0) {\n            y--;\n            continue;\n        }\n        result = x + y + z + w + v;\n        y--;\n    }\n    \n    free(temp);\n    return result;\n}\n\nint factorial(int n) {\n    if (n <= 1) return 1;\n    return n * factorial(n - 1);\n}\n\nvoid cleanup() {\n    goto cleanup_label;\n    \ncleanup_label:\n    printf(\"Cleanup complete\\n\");\n}\n\nint main() {\n    int a, b, c;\n    int* ptr = NULL;\n    \n    a = b = c = 0;\n    \n    while ((ptr = malloc(10)) != NULL) {\n        if (process_data(a, b, c, 1, 2) > 0) {\n            break;\n        }\n        free(ptr);\n    }\n    \n    return 0;\n}",
+  "compliance_score": 25,
+  "compliance_level": "major_issues",
+  "violations": [
+    {
+      "rule_id": "rule_4",
+      "rule_name": "Function Parameters",
+      "description": "Function 'process_data' has 5 parameters, exceeding the limit of 2",
+      "severity": "major",
+      "line_number": 12,
+      "suggestion": "Use a structure to group related parameters"
+    },
+    {
+      "rule_id": "rule_3",
+      "rule_name": "No Dynamic Memory",
+      "description": "Use of malloc() and free() functions",
+      "severity": "critical",
+      "line_number": 20,
+      "suggestion": "Use static allocation or stack-based allocation"
+    },
+    {
+      "rule_id": "rule_2",
+      "rule_name": "Fixed Loop Bounds",
+      "description": "Loop 'while (y > 0)' has no upper bound guarantee",
+      "severity": "major",
+      "line_number": 22,
+      "suggestion": "Add compile-time determinable upper bound"
+    },
+    {
+      "rule_id": "rule_1",
+      "rule_name": "Avoid Complex Flow Control",
+      "description": "Use of goto statement in cleanup() function",
+      "severity": "critical",
+      "line_number": 32,
+      "suggestion": "Use structured control flow instead of goto"
+    },
+    {
+      "rule_id": "rule_1",
+      "rule_name": "Avoid Complex Flow Control",
+      "description": "Recursive function call in factorial() function",
+      "severity": "critical",
+      "line_number": 36,
+      "suggestion": "Use iterative approach instead of recursion"
+    },
+    {
+      "rule_id": "rule_6",
+      "rule_name": "Variable Declarations",
+      "description": "Variable 'temp' declared in middle of function",
+      "severity": "minor",
+      "line_number": 13,
+      "suggestion": "Move all variable declarations to beginning of function"
+    },
+    {
+      "rule_id": "rule_7",
+      "rule_name": "Single Return Point",
+      "description": "Multiple return statements in process_data() function",
+      "severity": "moderate",
+      "line_number": 15,
+      "suggestion": "Use single return point with result variable"
+    },
+    {
+      "rule_id": "rule_8",
+      "rule_name": "Preprocessor Usage",
+      "description": "Use of #define for constants",
+      "severity": "minor",
+      "line_number": 5,
+      "suggestion": "Use const declarations instead of #define"
+    },
+    {
+      "rule_id": "rule_9",
+      "rule_name": "Assignment in Expressions",
+      "description": "Assignment in while loop condition",
+      "severity": "moderate",
+      "line_number": 47,
+      "suggestion": "Separate assignment from condition checking"
+    },
+    {
+      "rule_id": "rule_10",
+      "rule_name": "Multiple Assignments",
+      "description": "Multiple assignments in single statement",
+      "severity": "minor",
+      "line_number": 42,
+      "suggestion": "Use separate assignment statements"
+    }
+  ],
+  "annotations": {
+    "function_count": 4,
+    "line_count": 52,
+    "complexity_score": 8,
+    "nesting_depth": 4,
+    "variable_count": 8,
+    "pointer_count": 3,
+    "loop_count": 2,
+    "conditional_count": 6
+  },
+  "tags": ["memory_management", "control_flow", "function_design", "recursion", "goto_usage"],
+  "difficulty": "advanced"
+}

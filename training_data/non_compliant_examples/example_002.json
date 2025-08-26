@@ -1,0 +1,99 @@
+{
+  "code_sample": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n\n#define BUFFER_SIZE 100\n#define MAX_LOOPS 50\n\nint process_multiple_parameters(int a, int b, int c, int d, int e) {\n    int result;\n    int temp;\n    \n    if (a < 0) return -1;\n    if (b < 0) return -2;\n    if (c < 0) return -3;\n    \n    temp = malloc(BUFFER_SIZE);\n    if (temp == NULL) return -4;\n    \n    result = a + b + c + d + e;\n    \n    free(temp);\n    return result;\n}\n\nint recursive_factorial(int n) {\n    if (n <= 1) return 1;\n    return n * recursive_factorial(n - 1);\n}\n\nvoid process_data_with_goto() {\n    int i = 0;\n    int sum = 0;\n    \n    if (i < 0) goto error_handler;\n    \n    while (1) {\n        sum += i;\n        i++;\n        if (i > 100) break;\n    }\n    \n    return;\n    \nerror_handler:\n    printf(\"Error occurred\\n\");\n}\n\nint main() {\n    int x, y, z;\n    int* ptr1 = NULL;\n    int* ptr2 = NULL;\n    int* ptr3 = NULL;\n    \n    x = y = z = 0;\n    \n    ptr1 = malloc(100);\n    ptr2 = malloc(100);\n    ptr3 = malloc(100);\n    \n    if (ptr1 && ptr2 && ptr3) {\n        while ((x = getchar()) != EOF) {\n            if (x > 50) {\n                y++;\n            }\n        }\n    }\n    \n    free(ptr1);\n    free(ptr2);\n    free(ptr3);\n    \n    return 0;\n}",
+  "compliance_score": 15,
+  "compliance_level": "non_compliant",
+  "violations": [
+    {
+      "rule_id": "rule_4",
+      "rule_name": "Function Parameters",
+      "description": "Function 'process_multiple_parameters' has 5 parameters, exceeding the limit of 2",
+      "severity": "major",
+      "line_number": 12,
+      "suggestion": "Use a structure to group related parameters"
+    },
+    {
+      "rule_id": "rule_3",
+      "rule_name": "No Dynamic Memory",
+      "description": "Use of malloc() and free() functions",
+      "severity": "critical",
+      "line_number": 20,
+      "suggestion": "Use static allocation or stack-based allocation"
+    },
+    {
+      "rule_id": "rule_7",
+      "rule_name": "Single Return Point",
+      "description": "Multiple return statements in process_multiple_parameters() function",
+      "severity": "moderate",
+      "line_number": 14,
+      "suggestion": "Use single return point with result variable"
+    },
+    {
+      "rule_id": "rule_1",
+      "rule_name": "Avoid Complex Flow Control",
+      "description": "Recursive function call in recursive_factorial() function",
+      "severity": "critical",
+      "line_number": 25,
+      "suggestion": "Use iterative approach instead of recursion"
+    },
+    {
+      "rule_id": "rule_1",
+      "rule_name": "Avoid Complex Flow Control",
+      "description": "Use of goto statement in process_data_with_goto() function",
+      "severity": "critical",
+      "line_number": 32,
+      "suggestion": "Use structured control flow instead of goto"
+    },
+    {
+      "rule_id": "rule_2",
+      "rule_name": "Fixed Loop Bounds",
+      "description": "Loop 'while (1)' has no upper bound guarantee",
+      "severity": "major",
+      "line_number": 35,
+      "suggestion": "Add compile-time determinable upper bound"
+    },
+    {
+      "rule_id": "rule_8",
+      "rule_name": "Preprocessor Usage",
+      "description": "Use of #define for constants",
+      "severity": "minor",
+      "line_number": 5,
+      "suggestion": "Use const declarations instead of #define"
+    },
+    {
+      "rule_id": "rule_9",
+      "rule_name": "Assignment in Expressions",
+      "description": "Assignment in while loop condition",
+      "severity": "moderate",
+      "line_number": 55,
+      "suggestion": "Separate assignment from condition checking"
+    },
+    {
+      "rule_id": "rule_10",
+      "rule_name": "Multiple Assignments",
+      "description": "Multiple assignments in single statement",
+      "severity": "minor",
+      "line_number": 48,
+      "suggestion": "Use separate assignment statements"
+    },
+    {
+      "rule_id": "rule_6",
+      "rule_name": "Variable Declarations",
+      "description": "Variable 'temp' declared in middle of function",
+      "severity": "minor",
+      "line_number": 13,
+      "suggestion": "Move all variable declarations to beginning of function"
+    }
+  ],
+  "annotations": {
+    "function_count": 4,
+    "line_count": 65,
+    "complexity_score": 12,
+    "nesting_depth": 5,
+    "variable_count": 15,
+    "pointer_count": 6,
+    "loop_count": 2,
+    "conditional_count": 8
+  },
+  "tags": ["multiple_violations", "goto_usage", "recursion", "dynamic_memory", "complex_flow"],
+  "difficulty": "expert"
+}

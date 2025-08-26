@@ -1,0 +1,211 @@
+{
+  "code_sample": "#include <stdio.h>\n#include <stdlib.h>\n#include <string.h>\n#include <math.h>\n\n/* Edge case: Very long identifier that exceeds MISRA 5.1 limit */\nint this_is_an_extremely_long_identifier_name_that_definitely_exceeds_the_thirty_one_character_limit_for_misra_compliance = 0;\n\n/* Edge case: Octal constants that look like decimal - MISRA 4.1 */\n#define BUFFER_SIZE 0777    /* Looks like 777 but is actually 511 in octal */\n#define MAX_COUNT 0100      /* Looks like 100 but is actually 64 in octal */\n#define MIN_VALUE 0001      /* Looks like 1 but is actually 1 in octal */\n\n/* Edge case: Missing U suffix on large constants - MISRA 7.1 */\nconst uint32_t LARGE_CONSTANT = 4294967295;  /* Missing U suffix */\nconst uint16_t MEDIUM_CONSTANT = 65535;      /* Missing U suffix */\nconst uint8_t SMALL_CONSTANT = 255;          /* Missing U suffix */\n\n/* Edge case: Function with missing parameter types - MISRA 8.1 */\nint process_edge_case_data(param1, param2, param3) {\n    /* Edge case: Variable declared but never initialized - MISRA 9.1 */\n    int result;\n    int temp;\n    int unused_var;\n    \n    /* Edge case: Complex expression with undefined evaluation order - MISRA 13.2 */\n    result = param1++ + arr[param1];  /* param1 incremented before or after array access? */\n    \n    /* Edge case: Assignment in expression - MISRA 11.1 */\n    if (temp = param2 + param3) {\n        result += temp;\n    }\n    \n    /* Edge case: Comma operator with side effects - MISRA 12.1 */\n    result = (param1++, param2++, param3++);\n    \n    /* Edge case: Unused variable - MISRA 2.2 */\n    unused_var = param1 + param2 + param3;\n    \n    return result;\n}\n\n/* Edge case: Recursive function with deep nesting - MISRA 17.2 */\nint deep_recursive_function(int depth, int max_depth) {\n    if (depth >= max_depth) {\n        return depth;\n    }\n    \n    /* Recursive call that could cause stack overflow */\n    return depth + deep_recursive_function(depth + 1, max_depth);\n}\n\n/* Edge case: Goto with complex flow - NASA Rule 1 */\nvoid complex_goto_flow(int condition) {\n    int status = 0;\n    int counter = 0;\n    \n    if (condition < 0) {\n        goto error_handler;\n    }\n    \n    /* Process data with multiple goto targets */\n    while (counter < 10) {\n        if (counter % 2 == 0) {\n            goto process_even;\n        } else {\n            goto process_odd;\n        }\n        \n    process_even:\n        status += counter * 2;\n        counter++;\n        if (counter < 10) {\n            goto continue_loop;\n        }\n        \n    process_odd:\n        status += counter * 3;\n        counter++;\n        \n    continue_loop:\n        if (counter >= 10) {\n            goto cleanup;\n        }\n        goto loop_start;\n        \n    loop_start:\n        continue;\n    }\n    \ncleanup:\n    printf(\"Cleanup complete, status: %d\\n\", status);\n    return;\n    \nerror_handler:\n    printf(\"Error occurred\\n\");\n    goto cleanup;\n}\n\n/* Edge case: Unbounded loop with complex exit condition - NASA Rule 2 */\nvoid complex_unbounded_loop(int* data, int target_value) {\n    int index = 0;\n    int found = 0;\n    \n    /* Loop with no guaranteed upper bound */\n    while (!found) {\n        if (data[index] == target_value) {\n            found = 1;\n        } else if (data[index] == -1) {\n            /* Sentinel value - but what if -1 never appears? */\n            break;\n        } else if (index > 1000000) {\n            /* Safety check - but not compile-time determinable */\n            break;\n        }\n        index++;\n    }\n}\n\n/* Edge case: Dynamic memory with complex allocation patterns - NASA Rule 3 */\nint* create_complex_buffer(int size, int* actual_size) {\n    int* buffer = NULL;\n    int buffer_size = size;\n    \n    /* Dynamic allocation based on runtime conditions */\n    if (size < 0) {\n        buffer_size = abs(size);\n    } else if (size == 0) {\n        buffer_size = 1024;  /* Default size */\n    } else if (size > 1000000) {\n        buffer_size = 1000000;  /* Cap size */\n    }\n    \n    /* Allocate buffer with calculated size */\n    buffer = malloc(buffer_size * sizeof(int));\n    if (buffer != NULL) {\n        *actual_size = buffer_size;\n        memset(buffer, 0, buffer_size * sizeof(int));\n    }\n    \n    return buffer;\n}\n\n/* Edge case: Function with many parameters - NASA Rule 4 */\nint extremely_complex_function(int a, int b, int c, int d, int e, int f, int g, int h, int i, int j) {\n    /* Function with 10 parameters - well beyond the 2-parameter limit */\n    return a + b + c + d + e + f + g + h + i + j;\n}\n\n/* Edge case: Multiple levels of pointer dereferencing - NASA Rule 5 */\nint get_deep_pointer_value(int**** ptr) {\n    /* Four levels of dereferencing - beyond the 2-level limit */\n    return ****ptr;\n}\n\n/* Edge case: Variable declarations scattered throughout function - NASA Rule 6 */\nvoid function_with_scattered_declarations(int x) {\n    int result = x * 2;\n    \n    if (result > 100) {\n        int temp1 = result / 2;  /* Declaration in middle */\n        \n        if (temp1 > 50) {\n            int temp2 = temp1 / 2;  /* Another declaration */\n            result = temp2;\n        } else {\n            int temp3 = temp1 * 2;  /* Yet another declaration */\n            result = temp3;\n        }\n    }\n    \n    /* More declarations later in function */\n    int final_result = result + 10;\n    \n    return final_result;\n}\n\n/* Edge case: Multiple return points with complex logic - NASA Rule 7 */\nint function_with_complex_returns(int x, int y, int z) {\n    if (x < 0) {\n        if (y < 0) {\n            return -1;  /* First return */\n        } else {\n            return -2;  /* Second return */\n        }\n    }\n    \n    if (x > 100) {\n        if (y > 100) {\n            return -3;  /* Third return */\n        } else {\n            return -4;  /* Fourth return */\n        }\n    }\n    \n    if (z == 0) {\n        return 0;   /* Fifth return */\n    }\n    \n    if (x + y + z > 1000) {\n        return -5;  /* Sixth return */\n    }\n    \n    return x + y + z;  /* Seventh return */\n}\n\n/* Edge case: Complex preprocessor macros - NASA Rule 8 */\n#define COMPLEX_MACRO(x, y, z) { \\\n    int temp = (x) + (y); \\\n    if (temp > (z)) { \\\n        (x) = temp - (z); \\\n    } else { \\\n        (x) = temp + (z); \\\n    } \\\n}\n\n#define MULTI_LINE_MACRO(a, b) \\\n    do { \\\n        (a)++; \\\n        (b)++; \\\n        if ((a) > (b)) { \\\n            (a) = (b); \\\n        } \\\n    } while (0)\n\n/* Edge case: Assignment in complex expressions - NASA Rule 9 */\nint process_with_complex_assignments(int* data, int size) {\n    int sum = 0;\n    int i = 0;\n    int j = 0;\n    \n    /* Assignment in while condition with complex logic */\n    while ((i = get_next_index(data, i)) < size && \n           (j = get_secondary_index(data, j)) < size) {\n        sum += data[i] + data[j];\n    }\n    \n    /* Assignment in if condition */\n    if ((i = calculate_new_index(i)) > 0) {\n        sum += data[i];\n    }\n    \n    return sum;\n}\n\n/* Edge case: Multiple assignments in complex expressions - NASA Rule 10 */\nvoid initialize_complex_variables() {\n    int a, b, c, d, e, f, g, h;\n    \n    /* Multiple assignments in single statement */\n    a = b = c = d = e = f = g = h = 0;\n    \n    /* Complex assignment chain */\n    a = (b = (c = (d = (e = (f = (g = (h = 100))))));\n}\n\n/* Edge case: Uninitialized memory usage - JPL Rule 6 */\nvoid use_uninitialized_memory() {\n    int buffer[100];  /* Contents undefined */\n    int* dynamic_buffer;\n    \n    /* Use buffer without initialization */\n    printf(\"Buffer[0] = %d\\n\", buffer[0]);\n    printf(\"Buffer[50] = %d\\n\", buffer[50]);\n    printf(\"Buffer[99] = %d\\n\", buffer[99]);\n    \n    /* Dynamic buffer with undefined contents */\n    dynamic_buffer = malloc(100 * sizeof(int));\n    if (dynamic_buffer != NULL) {\n        /* Use buffer before initialization */\n        printf(\"Dynamic buffer[0] = %d\\n\", dynamic_buffer[0]);\n        free(dynamic_buffer);\n    }\n}\n\n/* Edge case: Poor error handling with edge cases - JPL Rule 7 */\nint divide_with_edge_cases(int a, int b) {\n    /* No error checking for edge cases */\n    if (b == 0) {\n        /* Division by zero - undefined behavior */\n        return a / b;\n    }\n    \n    if (a == INT_MIN && b == -1) {\n        /* Overflow case - undefined behavior */\n        return a / b;\n    }\n    \n    return a / b;\n}\n\n/* Edge case: Implicit type conversions - JPL Rule 9 */\nvoid complex_type_conversions() {\n    int int_value = 1000;\n    char char_value;\n    float float_value = 3.14159f;\n    double double_value = 2.71828;\n    \n    /* Implicit conversions with potential data loss */\n    char_value = int_value;  /* int to char - potential truncation */\n    \n    /* Float to int conversion */\n    int_value = float_value;  /* Truncates decimal part */\n    \n    /* Double to float conversion */\n    float_value = double_value;  /* Potential precision loss */\n    \n    /* Complex arithmetic with mixed types */\n    double result = int_value + float_value + double_value;\n    \n    /* Pointer arithmetic with different types */\n    char* char_ptr = (char*)&int_value;\n    int* int_ptr = (int*)char_ptr;\n    \n    /* Use converted values */\n    printf(\"Char: %c, Int: %d, Float: %f\\n\", char_value, int_value, float_value);\n}\n\n/* Edge case: Platform-dependent types - JPL Rule 10 */\nvoid platform_dependent_operations() {\n    int regular_int = 100;        /* Platform-dependent size */\n    short short_int = 50;         /* Platform-dependent size */\n    long long_int = 1000L;        /* Platform-dependent size */\n    long long long_long_int = 1000000LL;  /* Platform-dependent size */\n    \n    /* Operations that depend on platform-specific sizes */\n    int result1 = regular_int * 2;      /* May overflow on 16-bit systems */\n    short result2 = short_int * 100;    /* May overflow on some systems */\n    long result3 = long_int * 1000000L; /* May overflow on 32-bit systems */\n    \n    /* Size-dependent operations */\n    if (sizeof(int) == 2) {\n        /* 16-bit system specific code */\n        result1 = result1 & 0xFFFF;\n    } else if (sizeof(int) == 4) {\n        /* 32-bit system specific code */\n        result1 = result1 & 0xFFFFFFFF;\n    }\n}\n\n/* Edge case: Complex control flow with multiple violations */\nvoid complex_edge_case_function(int* data, int size) {\n    int i = 0;\n    int* temp_buffer;\n    int result = 0;\n    \n    /* Multiple violations in single function */\n    if (size <= 0) {\n        goto error_exit;  /* NASA Rule 1 violation */\n    }\n    \n    /* Dynamic allocation - NASA Rule 3 violation */\n    temp_buffer = malloc(size * sizeof(int));\n    if (temp_buffer == NULL) {\n        goto error_exit;\n    }\n    \n    /* Unbounded loop - NASA Rule 2 violation */\n    while (data[i] != -1) {  /* No upper bound guarantee */\n        if (i >= size) {\n            break;  /* Safety check, but not compile-time determinable */\n        }\n        \n        /* Assignment in expression - NASA Rule 9 violation */\n        if ((result = data[i] * 2) > 100) {\n            temp_buffer[i] = result;\n        } else {\n            temp_buffer[i] = data[i];\n        }\n        \n        i++;\n    }\n    \n    /* Multiple return points - NASA Rule 7 violation */\n    if (result > 1000) {\n        free(temp_buffer);\n        return -1;  /* First return */\n    }\n    \n    if (result < 0) {\n        free(temp_buffer);\n        return -2;  /* Second return */\n    }\n    \n    free(temp_buffer);\n    return result;  /* Third return */\n    \nerror_exit:\n    return -999;  /* Fourth return */\n}\n\nint main() {\n    int x, y, z;\n    int* dynamic_buffer;\n    int**** deep_ptr;\n    int result;\n    \n    /* Initialize variables with multiple assignments */\n    x = y = z = 0;\n    \n    /* Call function with many parameters */\n    result = extremely_complex_function(x, y, z, 1, 2, 3, 4, 5, 6, 7);\n    \n    /* Create dynamic buffer */\n    dynamic_buffer = create_complex_buffer(100, &x);\n    \n    /* Call recursive function */\n    int recursive_result = deep_recursive_function(0, 1000);\n    \n    /* Call complex goto function */\n    complex_goto_flow(x);\n    \n    /* Call unbounded loop function */\n    complex_unbounded_loop(dynamic_buffer, 50);\n    \n    /* Call function with scattered declarations */\n    int scattered_result = function_with_scattered_declarations(x);\n    \n    /* Call function with complex returns */\n    int complex_return_result = function_with_complex_returns(x, y, z);\n    \n    /* Use complex macros */\n    COMPLEX_MACRO(x, y, z);\n    MULTI_LINE_MACRO(x, y);\n    \n    /* Call function with complex assignments */\n    int assignment_result = process_with_complex_assignments(dynamic_buffer, 100);\n    \n    /* Initialize complex variables */\n    initialize_complex_variables();\n    \n    /* Use uninitialized memory */\n    use_uninitialized_memory();\n    \n    /* Call division with edge cases */\n    int division_result = divide_with_edge_cases(x, y);\n    \n    /* Complex type conversions */\n    complex_type_conversions();\n    \n    /* Platform-dependent operations */\n    platform_dependent_operations();\n    \n    /* Complex edge case function */\n    int edge_case_result = complex_edge_case_function(dynamic_buffer, 100);\n    \n    /* Cleanup */\n    if (dynamic_buffer != NULL) {\n        free(dynamic_buffer);\n    }\n    \n    return result + recursive_result + scattered_result + complex_return_result + \n           assignment_result + division_result + edge_case_result;\n}",
+  "compliance_score": 8,
+  "compliance_level": "non_compliant",
+  "violations": [
+    {
+      "rule_id": "misra_5.1",
+      "rule_name": "Long Identifiers",
+      "description": "Identifier exceeds 31 characters by a significant margin",
+      "severity": "minor",
+      "line_number": 8,
+      "suggestion": "Use shorter identifier names within 31 character limit"
+    },
+    {
+      "rule_id": "misra_4.1",
+      "rule_name": "Octal Constants",
+      "description": "Multiple octal constants that look like decimal numbers",
+      "severity": "minor",
+      "line_number": 11,
+      "suggestion": "Use decimal constants with explicit notation"
+    },
+    {
+      "rule_id": "misra_7.1",
+      "rule_name": "Missing U Suffix",
+      "description": "Multiple unsigned constants missing U suffix",
+      "severity": "minor",
+      "line_number": 15,
+      "suggestion": "Add U suffix to all unsigned constants"
+    },
+    {
+      "rule_id": "misra_8.1",
+      "rule_name": "Missing Parameter Types",
+      "description": "Function parameters completely missing explicit types",
+      "severity": "major",
+      "line_number": 18,
+      "suggestion": "Specify explicit types for all parameters"
+    },
+    {
+      "rule_id": "misra_9.1",
+      "rule_name": "Uninitialized Variables",
+      "description": "Multiple variables declared but never initialized",
+      "severity": "major",
+      "line_number": 19,
+      "suggestion": "Initialize all variables before use"
+    },
+    {
+      "rule_id": "misra_13.2",
+      "rule_name": "Inconsistent Expression Evaluation",
+      "description": "Complex expression with undefined evaluation order",
+      "severity": "critical",
+      "line_number": 22,
+      "suggestion": "Separate operations to ensure evaluation order"
+    },
+    {
+      "rule_id": "misra_11.1",
+      "rule_name": "Assignment in Expressions",
+      "description": "Assignment expression used in if condition",
+      "severity": "moderate",
+      "line_number": 25,
+      "suggestion": "Separate assignment from condition"
+    },
+    {
+      "rule_id": "misra_12.1",
+      "rule_name": "Comma Operator",
+      "description": "Comma operator with side effects in expression",
+      "severity": "minor",
+      "line_number": 28,
+      "suggestion": "Avoid comma operator usage"
+    },
+    {
+      "rule_id": "misra_2.2",
+      "rule_name": "Dead Code",
+      "description": "Variable assigned but never used",
+      "severity": "minor",
+      "line_number": 31,
+      "suggestion": "Remove unused variables"
+    },
+    {
+      "rule_id": "misra_17.2",
+      "rule_name": "Recursion",
+      "description": "Recursive function with potential stack overflow",
+      "severity": "critical",
+      "line_number": 34,
+      "suggestion": "Use iterative approach instead of recursion"
+    },
+    {
+      "rule_id": "nasa_rule_1",
+      "rule_name": "Complex Flow Control",
+      "description": "Complex goto flow with multiple targets and loops",
+      "severity": "critical",
+      "line_number": 38,
+      "suggestion": "Use structured control flow instead of goto"
+    },
+    {
+      "rule_id": "nasa_rule_2",
+      "rule_name": "Fixed Loop Bounds",
+      "description": "Loop with no compile-time determinable upper bound",
+      "severity": "major",
+      "line_number": 75,
+      "suggestion": "Add compile-time determinable upper bound"
+    },
+    {
+      "rule_id": "nasa_rule_3",
+      "rule_name": "No Dynamic Memory",
+      "description": "Dynamic memory allocation with complex patterns",
+      "severity": "critical",
+      "line_number": 82,
+      "suggestion": "Use static allocation or stack-based allocation"
+    },
+    {
+      "rule_id": "nasa_rule_4",
+      "rule_name": "Function Parameters",
+      "description": "Function with 10 parameters, far exceeding limit",
+      "severity": "major",
+      "line_number": 95,
+      "suggestion": "Use structures to group related parameters"
+    },
+    {
+      "rule_id": "nasa_rule_5",
+      "rule_name": "Pointer Dereferencing",
+      "description": "Four levels of pointer dereferencing",
+      "severity": "major",
+      "line_number": 100,
+      "suggestion": "Limit pointer dereferencing to maximum 2 levels"
+    },
+    {
+      "rule_id": "nasa_rule_6",
+      "rule_name": "Variable Declarations",
+      "description": "Multiple variables declared throughout function",
+      "severity": "minor",
+      "line_number": 105,
+      "suggestion": "Move all variable declarations to beginning of function"
+    },
+    {
+      "rule_id": "nasa_rule_7",
+      "rule_name": "Single Return Point",
+      "description": "Function with 7 return points and complex logic",
+      "severity": "moderate",
+      "line_number": 115,
+      "suggestion": "Use single return point with result variable"
+    },
+    {
+      "rule_id": "nasa_rule_8",
+      "rule_name": "Preprocessor Usage",
+      "description": "Complex multi-line macros with side effects",
+      "severity": "minor",
+      "line_number": 130,
+      "suggestion": "Use const declarations and inline functions instead"
+    },
+    {
+      "rule_id": "nasa_rule_9",
+      "rule_name": "Assignment in Expressions",
+      "description": "Multiple assignments in complex expressions",
+      "severity": "moderate",
+      "line_number": 140,
+      "suggestion": "Separate assignments from expressions"
+    },
+    {
+      "rule_id": "nasa_rule_10",
+      "rule_name": "Multiple Assignments",
+      "description": "Multiple assignments in single statements",
+      "severity": "minor",
+      "line_number": 150,
+      "suggestion": "Use separate assignment statements"
+    },
+    {
+      "rule_id": "jpl_rule_6",
+      "rule_name": "Memory Initialization",
+      "description": "Multiple buffers used without initialization",
+      "severity": "moderate",
+      "line_number": 155,
+      "suggestion": "Explicitly initialize all buffer contents"
+    },
+    {
+      "rule_id": "jpl_rule_7",
+      "rule_name": "Error Handling",
+      "description": "Multiple edge cases without proper error handling",
+      "severity": "major",
+      "line_number": 170,
+      "suggestion": "Add comprehensive error checking for all edge cases"
+    },
+    {
+      "rule_id": "jpl_rule_9",
+      "rule_name": "Type Safety",
+      "description": "Multiple implicit type conversions with data loss",
+      "severity": "moderate",
+      "line_number": 185,
+      "suggestion": "Use explicit type casting for all conversions"
+    },
+    {
+      "rule_id": "jpl_rule_10",
+      "rule_name": "Standard Integer Types",
+      "description": "Extensive use of platform-dependent types",
+      "severity": "minor",
+      "line_number": 200,
+      "suggestion": "Use stdint.h types for platform independence"
+    }
+  ],
+  "annotations": {
+    "function_count": 20,
+    "line_count": 320,
+    "complexity_score": 25,
+    "nesting_depth": 8,
+    "variable_count": 45,
+    "pointer_count": 20,
+    "loop_count": 6,
+    "conditional_count": 35
+  },
+  "tags": ["edge_cases", "boundary_conditions", "complex_violations", "multiple_standards", "subtle_patterns"],
+  "difficulty": "expert"
+}
